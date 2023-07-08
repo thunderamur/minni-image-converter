@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "minni-image-converter"
+version = "0.1.0"
+description = ""
+authors = ["Ramil Minnigaliev <minnigaliev-r@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "minni_image_converter"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pillow = "^9.5.0"
+
+
+[tool.poetry.group.dev]
+optional = true
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.277"
+black = "^23.3.0"
+
+
+[tool.ruff]
+select = ["E", "F", "I"]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
