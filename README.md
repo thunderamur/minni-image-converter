@@ -7,7 +7,7 @@ Multiprocessing tool for fast resize and compress photos.
 [Install Poetry](https://python-poetry.org/docs/#installation)
 
 ```sh
-python -m venv .venv
+python3 -m venv .venv
 . .venv/bin/activate
 poetry install --with dev
 ```
@@ -15,5 +15,5 @@ poetry install --with dev
 ## Usage
 
 ```sh
-python -m minni_image_converter.cli -s source/dir -d destination/dir
+python3 -m minni_image_converter.cli -s source/dir -d destination/dir
 ```

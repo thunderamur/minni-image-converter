@@ -1,15 +1,15 @@
 import logging
 import multiprocessing as mp
-import os
 import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from queue import Empty
-from typing import Generator
 
 from PIL import Image
+from pillow_heif import AvifImagePlugin
 
+from minni_image_converter.find import find_files
 from minni_image_converter.size import Size, get_new_size
 
 IMAGE_TYPES = ("*.jpg",)
@@ -24,15 +24,6 @@ class Options:
 options = Options()
 
 
-def find_images(dir_path: str) -> Generator[Path, None, None]:
-    cwd = Path.cwd()
-    os.chdir(dir_path)
-    for image_type in IMAGE_TYPES:
-        yield from Path().rglob(image_type.lower())
-        yield from Path().rglob(image_type.upper())
-    os.chdir(cwd)
-
-
 def convert(image_path: Path):
     src = Path(options.src, image_path)
     dst = Path(options.dst, image_path)
@@ -40,7 +31,7 @@ def convert(image_path: Path):
     image = Image.open(src)
     if new_size := get_new_size(Size(image.width, image.height)):
         image = image.resize(new_size, resample=Image.Resampling.LANCZOS)
-    image.save(dst.with_suffix(".webp"))
+    image.save(dst.with_suffix(".avif"))
 
 
 def convert_task(image_queue: mp.Queue) -> None:
@@ -67,7 +58,7 @@ def batch_convert(src_dir: str, dst_dir: str) -> None:
     options.dst = dst_dir
     image_queue = mp.Queue()
 
-    for count, image_path in enumerate(find_images(src_dir), start=1):
+    for count, image_path in enumerate(find_files(src_dir, IMAGE_TYPES), start=1):
         print(f"Found image {count}: {image_path}")
         image_queue.put(image_path)
 

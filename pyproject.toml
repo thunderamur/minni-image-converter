@@ -8,8 +8,9 @@ packages = [{include = "minni_image_converter"}]
 
 
 [tool.poetry.dependencies]
-python = "^3.10"
-pillow = "^9.5.0"
+python = "^3.12"
+pillow = "^11.1.0"
+pillow-heif = "^0.22.0"
 
 
 [tool.poetry.group.dev]
