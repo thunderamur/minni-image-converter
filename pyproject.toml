@@ -9,8 +9,7 @@ packages = [{include = "minni_image_converter"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pillow = "^11.1.0"
-pillow-heif = "^0.22.0"
+pillow = "^11.3.0"
 
 
 [tool.poetry.group.dev]
@@ -19,7 +18,6 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.277"
-black = "^23.3.0"
 
 
 [tool.ruff]

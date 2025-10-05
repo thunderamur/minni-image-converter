@@ -7,7 +7,6 @@ from pathlib import Path
 from queue import Empty
 
 from PIL import Image
-from pillow_heif import AvifImagePlugin
 
 from minni_image_converter.find import find_files
 from minni_image_converter.size import Size, get_new_size

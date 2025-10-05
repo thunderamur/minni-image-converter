@@ -22,8 +22,9 @@ def convert(video_path: Path):
     dst = Path(options.dst, video_path)
     dst.parent.mkdir(parents=True, exist_ok=True)
     if dst.is_file():
-        if (input(f"{dst} already exists, overwrite it (y/n)? ")).lower() == "y":
-            subprocess.run(f"ffmpeg -y -i {src} -c:v libx265 -c:a copy {dst}", shell=True)
+        if (input(f"{dst} already exists, overwrite it (y/n)? ")).lower() != "y":
+            return
+    subprocess.run(f'ffmpeg -y -i "{src}" -c:v libx265 -c:a copy "{dst}"', shell=True)
 
 
 def batch_convert(src_dir: str, dst_dir: str) -> None:
