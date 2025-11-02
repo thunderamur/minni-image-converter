@@ -15,5 +15,9 @@ poetry install --with dev
 ## Usage
 
 ```sh
-python3 -m minni_image_converter.cli -s source/dir -d destination/dir
+python3 -m minni_image_converter.cli --src source/dir --dst destination/dir
+```
+
+```sh
+python3 -m minni_image_converter.cli --diff --src source/dir --dst destination/dir
 ```
