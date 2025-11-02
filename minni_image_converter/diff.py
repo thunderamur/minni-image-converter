@@ -1,5 +1,6 @@
+import functools
 import hashlib
-import os
+from multiprocessing import Pool, cpu_count
 from pathlib import Path
 from minni_image_converter.find import find_files
 
@@ -7,14 +8,17 @@ from minni_image_converter.find import find_files
 BUFFER_SIZE = 2^16
 
 
-def get_hash(path: Path, hash_type='md5'):
-    func = getattr(hashlib, hash_type)()
-
+def get_hash(path: Path, hash_type=hashlib.blake2s):
+    func = hash_type()
     with open(path, "rb") as f:
         while (block := f.read(BUFFER_SIZE)):
             func.update(block)
-
     return func.hexdigest()
+
+
+def check_hash(src_dir: str, dst_dir: str, file: Path):
+    if (get_hash(Path(src_dir) / file)) != get_hash(Path(dst_dir) / file):
+        print(f"File {file} do not match")
 
 
 def check(src_dir: str, dst_dir: str) -> None:
@@ -34,6 +38,9 @@ def check(src_dir: str, dst_dir: str) -> None:
     if not_found_dst or not_found_src:
         return
 
-    for file in src_files:
-        if (get_hash(Path(src_dir) / file)) != get_hash(Path(dst_dir) / file):
-            print(f"File {file} do not match")
+    print("All the filenames match. Started to compare hash sum")
+
+    partial_check_hash = functools.partial(check_hash, src_dir, dst_dir)
+
+    with Pool(cpu_count()) as p:
+        p.map(partial_check_hash, src_files)
